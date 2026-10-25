@@ -37,14 +37,12 @@ def show_main():
 db = firestore.client()
 
 def show_main():
-    st.title("Thank you for choosing food share")
-    st.subheader("Note: if you are logging in, just use your email and the custom password you used to sign up.")
-
+    st.title("Thank you for choosing FoodShare")
     choice = st.selectbox("Login/Signup", ["Login", "Signup"])
 
     if choice == "Login":
-        email = st.text_input("Custom Email Address", key="login_email")
-        password = st.text_input("Custom Password", type="password", key="login_password")
+        email = st.text_input("Email Address", key="login_email")
+        password = st.text_input("Password", type="password", key="login_password")
 
         if st.button("Login"):
             if not email or not password:
@@ -88,9 +86,9 @@ def show_main():
                     st.success("Login successful!")
                     st.switch_page("pages/Home_Page.py")
     else:
-        email = st.text_input("Custom Email Address", key="signup_email")
-        password = st.text_input("Custom Password", type="password", key="signup_password")
-        username = st.text_input("Enter your custom username", key="signup_username")
+        email = st.text_input("Email Address", key="signup_email")
+        password = st.text_input("Password", type="password", key="signup_password")
+        username = st.text_input("Enter your username", key="signup_username")
 
         storage_client = storage.Client(credentials=service_account_credentials, project="foodshare-ee612")
         BUCKET_NAME = "foodshare"
