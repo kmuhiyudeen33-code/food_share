@@ -132,7 +132,7 @@ def show_home():
                 st.markdown(f"**Category:** {item['category']}")
                 file_to_view_2 = download_gcs_blob(BUCKET_NAME, f"food_pictures/{doc_id}.png")
                 if file_to_view_2[0] is not None:
-                    st.image(file_to_view_2[0], width=200)
+                    st.image(file_to_view_2[0], width=300)
                 st.caption(f"**Location:** {item['location']}")
                 st.write(f"**Description:** {item['description']}")
                 st.write(f"**Posted by:**")
