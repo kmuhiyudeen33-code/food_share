@@ -10,7 +10,8 @@ def app():
     )
 
     if not firebase_admin._apps:
-        cred = credentials.Certificate("secrets/foodshare-ee612-firebase-adminsdk-fbsvc-cc064aad8e.json")
+        firebase_creds_dict = dict(st.secrets["gcp_service_account"])   
+        cred = credentials.Certificate(firebase_creds_dict)
         firebase_admin.initialize_app(cred)
     
     if 'db' not in st.session_state:

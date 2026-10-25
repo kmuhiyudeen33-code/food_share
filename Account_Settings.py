@@ -12,8 +12,9 @@ import pandas as pd
 import io
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "firebase-adminsdk-fbsvc@foodshare-ee612.iam.gserviceaccount.com.json"
-key_path = "secrets/foodshare-ee612-firebase-adminsdk-fbsvc-cc064aad8e.json"
-service_account_credentials = service_account.Credentials.from_service_account_file(key_path)
+credentials_dict = dict(st.secrets["gcp_service_account"])
+service_account_credentials = service_account.Credentials.from_service_account_info(credentials_dict)
+
 BUCKET_NAME = "foodshare"
 storage_client = storage.Client(credentials=service_account_credentials, project="foodshare-ee612")
 
@@ -24,7 +25,8 @@ def app():
     )
 
     if not firebase_admin._apps:
-        cred = credentials.Certificate("secrets/foodshare-ee612-firebase-adminsdk-fbsvc-cc064aad8e.json")
+        firebase_creds_dict = dict(st.secrets["gcp_service_account"])   
+        cred = credentials.Certificate(firebase_creds_dict)
         firebase_admin.initialize_app(cred)
 
     db = firestore.client()

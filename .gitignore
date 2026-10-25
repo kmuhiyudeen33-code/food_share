@@ -74,3 +74,6 @@ __pycache__/
 
 # Ignore secrets directory
 secrets/*
+
+# Ignore streamlit secrets.toml file
+secrets.toml
