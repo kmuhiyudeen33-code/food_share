@@ -42,12 +42,12 @@ def show_home():
 
     username = st.session_state.get("username", "Anoynomous")
     st.title("FoodShare")
-    st.subheader(f"Welcome back, {username}! Share food with your community.")
+    st.write(f"Welcome back, {username}! Share food with your community.")
 
     if username == "Anoynomous":
         st.switch_page("main.py")
     
-    st.sidebar.header("Share Extra Food")
+    st.sidebar.subheader("Share Extra Food")
     new_title = st.sidebar.text_input("What food do you have? (e.g., 6 Extra Tomatoes)")
     new_location = st.sidebar.text_input("Your Location/Neighborhood")
     categories = ["Vegetables", "Fruits", "Bakery & Bread", "Canned Goods", "Dairy & Eggs", "Other"]
@@ -94,7 +94,7 @@ def show_home():
     if "deleting_id" not in st.session_state:
         st.session_state.deleting_id = None
 
-    st.header("Available Food Nearby")
+    st.subheader("Available Food Nearby")
     filter_categories = ["All Categories"] + categories
     selected_filter = st.selectbox("Filter listings by category:", filter_categories)
     
