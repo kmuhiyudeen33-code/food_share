@@ -89,7 +89,6 @@ def app():
                 
                 st.session_state["email"] = email_update
                 st.success("Email updated successfully!")
-                st.rerun()
             except Exception as e:
                 error_code = getattr(e, 'code', None)
                 if error_code == 'EMAIL_EXISTS':
@@ -117,7 +116,6 @@ def app():
                     })
                 st.session_state["username"] = username_update
                 st.success("Username updated successfully!")
-                st.rerun()
             except Exception as e:
                 error_code = getattr(e, 'code', None)
                 if error_code == 'EMAIL_EXISTS':
@@ -146,7 +144,6 @@ def app():
                     
                     st.session_state["password"] = password_update
                     st.success("Password updated successfully!")
-                    st.rerun()
                 except Exception as e:
                     error_code = getattr(e, 'code', None)
                     if error_code == 'EMAIL_EXISTS':
@@ -188,7 +185,7 @@ def app():
             
             with conf_col1:
                 if st.button("Yes, proceed", key=f"confirm_{username}"):
-                    db.collection("users").document(username).delete
+                    db.collection("users").document(username).delete()
 
                     auth.delete_user(user_id)
                     st.session_state.delete_clicked = False 

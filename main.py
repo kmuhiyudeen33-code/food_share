@@ -107,15 +107,15 @@ def show_main():
                 st.error("All fields are required.")
                 return
             try:
-                if picture_uploader is not None:
-                    with st.spinner("Uploading..."):
-                        upload_to_gcs(BUCKET_NAME, folder_name="profile_pictures", streamlit_file=picture_uploader, file_name=username)
                 user = auth.create_user(email=email, password=password, uid=username)
                 db.collection("users").document(username).set({
                     "email": email,
                     "username": username,
                     "password": password,
                 })
+                if picture_uploader is not None:
+                    with st.spinner("Uploading..."):
+                        upload_to_gcs(BUCKET_NAME, folder_name="profile_pictures", streamlit_file=picture_uploader, file_name=username)
                 st.session_state.uid = username
                 st.session_state.username = username
                 st.session_state.email = email
@@ -131,6 +131,7 @@ def show_main():
                     st.warning('This username is already taken. Please choose another one.')
                 else:
                     st.error(f"An error occurred: {e}")
+                    db.collection("users").document(username).delete()
                 return
 
 def show_bug_report():

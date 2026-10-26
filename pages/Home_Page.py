@@ -146,43 +146,47 @@ def show_home():
                 col1, col2 = st.columns(2)
 
                 with col1:
-                    if st.button("Claim", key=f"claim_{doc_id}"):
-                        fresh_doc = db.collection("Food Items").document(doc_id).get()
-                        if not fresh_doc.exists:
-                            st.error("Too late! Someone else just claimed this item.")
-                            st.rerun()
-                        else:
-                            fresh_item = fresh_doc.to_dict()
-                            
-                            if "claimed_items_list" not in st.session_state:
-                                st.session_state.claimed_items_list = []
+                    posted_by = item.get('username', '')
+                    if username == posted_by and username != "Anoynomous":
+                        st.button("Claim", key=f"claim_disabled_{doc_id}", disabled=True, help="You cannot claim your own listings.")
+                    else:
+                        if st.button("Claim", key=f"claim_{doc_id}"):
+                            fresh_doc = db.collection("Food Items").document(doc_id).get()
+                            if not fresh_doc.exists:
+                                st.error("Too late! Someone else just claimed this item.")
+                                st.rerun()
+                            else:
+                                fresh_item = fresh_doc.to_dict()
+                                
+                                if "claimed_items_list" not in st.session_state:
+                                    st.session_state.claimed_items_list = []
 
-                            new_claim = {
-                                "item_id": doc_id,
-                                "title": fresh_item.get('title'),
-                                "category": fresh_item.get('category'),
-                                "location": fresh_item.get('location'),
-                                "description": fresh_item.get('description'),
-                                "posted_by": fresh_item.get('username', 'Unknown')
-                            }
+                                new_claim = {
+                                    "item_id": doc_id,
+                                    "title": fresh_item.get('title'),
+                                    "category": fresh_item.get('category'),
+                                    "location": fresh_item.get('location'),
+                                    "description": fresh_item.get('description'),
+                                    "posted_by": fresh_item.get('username', 'Unknown')
+                                }
 
-                            if new_claim not in st.session_state.claimed_items_list:
-                                st.session_state.claimed_items_list.append(new_claim)
-                            
-                            claim_doc_id = doc_id
-                            db.collection("Claimed Items").document(claim_doc_id).set({
-                                "claimed_by": username,
-                                "title": fresh_item.get('title'),
-                                "category": fresh_item.get('category'),
-                                "location": fresh_item.get('location'),
-                                "description": fresh_item.get('description'),
-                                "item_id": doc_id,
-                                "posted_by": fresh_item.get('username', 'Unknown')
-                            })
+                                if new_claim not in st.session_state.claimed_items_list:
+                                    st.session_state.claimed_items_list.append(new_claim)
+                                
+                                claim_doc_id = doc_id
+                                db.collection("Claimed Items").document(claim_doc_id).set({
+                                    "claimed_by": username,
+                                    "title": fresh_item.get('title'),
+                                    "category": fresh_item.get('category'),
+                                    "location": fresh_item.get('location'),
+                                    "description": fresh_item.get('description'),
+                                    "item_id": doc_id,
+                                    "posted_by": fresh_item.get('username', 'Unknown')
+                                })
 
-                            db.collection("Food Items").document(doc_id).delete()
-                            st.toast(f"'{fresh_item.get('title')}' successfully claimed!")
-                            st.rerun()
+                                db.collection("Food Items").document(doc_id).delete()
+                                st.toast(f"'{fresh_item.get('title')}' successfully claimed!")
+                                st.rerun()
 
                 with col2:
                     posted_by = item.get('username', '')
