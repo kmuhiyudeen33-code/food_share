@@ -37,7 +37,7 @@ def show_main():
 db = firestore.client()
 
 def show_main():
-    st.title("Thank you for choosing FoodShare")
+    st.image("img/logo_large.png", width=200)
     choice = st.selectbox("Login/Signup", ["Login", "Signup"])
 
     if choice == "Login":
